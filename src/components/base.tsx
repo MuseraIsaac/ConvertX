@@ -26,19 +26,14 @@ export const BaseHtml = ({
       {children}
       <footer class="w-full">
         <div class="p-4 text-center text-sm text-neutral-500">
-          <span>Powered by </span>
-          <a
-            href="https://github.com/C4illin/ConvertX"
-            class={`
-              text-neutral-400
-              hover:text-accent-500
-            `}
-          >
-            ConvertX{" "}
-          </a>
-          <span safe>v{version || ""}</span>
+          <div>
+            <a href="/about.html" class="text-neutral-400 hover:text-accent-500">About Us</a> |
+            <a href="/privacy.html" class="text-neutral-400 hover:text-accent-500"> Privacy Policy</a> |
+            <a href="/contact.html" class="text-neutral-400 hover:text-accent-500"> Contact Us</a>
+          </div>
+          <span>Powered by ConvertX </span>
         </div>
-      </footer>
+      </footer>    
     </body>
   </html>
 );
