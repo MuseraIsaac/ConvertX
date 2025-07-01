@@ -19,12 +19,10 @@ import { FIRST_RUN, userService } from "./user";
 export const root = new Elysia()
   .use(userService)
   .get("/", async ({ jwt, redirect, cookie: { auth, jobId } }) => {
-    // ... (all logic above unchanged)
     if (!ALLOW_UNAUTHENTICATED) {
       if (FIRST_RUN) {
         return redirect(`${WEBROOT}/setup`, 302);
       }
-
       if (!auth?.value) {
         return redirect(`${WEBROOT}/login`, 302);
       }
@@ -39,15 +37,12 @@ export const root = new Elysia()
       const accessToken = await jwt.sign({
         id: newUserId,
       });
-
       user = { id: newUserId };
       if (!auth) {
         return {
           message: "No auth cookie, perhaps your browser is blocking cookies.",
         };
       }
-
-      // set cookie
       auth.set({
         value: accessToken,
         httpOnly: true,
@@ -57,15 +52,12 @@ export const root = new Elysia()
       });
     } else if (auth?.value) {
       user = await jwt.verify(auth.value);
-
       if (
         user !== false &&
         user.id &&
         (Number.parseInt(user.id) < 2 ** 24 || !ALLOW_UNAUTHENTICATED)
       ) {
-        // make sure user exists in db
         const existingUser = db.query("SELECT * FROM users WHERE id = ?").as(User).get(user.id);
-
         if (!existingUser) {
           if (auth?.value) {
             auth.remove();
@@ -186,7 +178,6 @@ export const root = new Elysia()
                         <ul class="convert_to_target flex flex-row flex-wrap gap-1">
                           {targets.map((target) => (
                             <button
-                              // https://stackoverflow.com/questions/121499/when-a-blur-event-occurs-how-can-i-find-out-which-element-focus-went-to#comment82388679_33325953
                               tabindex={0}
                               class={`
                                 target rounded bg-neutral-700 p-1 text-base
@@ -206,7 +197,6 @@ export const root = new Elysia()
                     ))}
                   </article>
 
-                  {/* Hidden element which determines the format to convert the file too and the converter to use */}
                   <select name="convert_to" aria-label="Convert to" required hidden>
                     <option selected disabled value="">
                       Convert to
@@ -233,74 +223,123 @@ export const root = new Elysia()
                 disabled
               />
 
-              {/* === PROMO SECTION: Free Online Converter === */}
-              <section style={{
-                maxWidth: "700px",
-                margin: "24px auto 0 auto",
-                background: "#172133",
-                borderRadius: "18px",
-                padding: "2.5rem 2rem",
-                boxShadow: "0 2px 16px rgba(20,30,40,0.13)",
-                color: "#eef1f7"
-              }}>
-                <h2 style={{
-                  textAlign: "center",
-                  fontSize: "2.1rem",
-                  fontWeight: 700,
-                  marginBottom: "1rem",
-                  color: "#a4d037"
-                }}>
-                  Free Online Converter
-                </h2>
-                <p style={{
-                  fontSize: "1.2rem",
-                  textAlign: "center",
-                  marginBottom: "1.4rem"
-                }}>
-                  Instantly convert files between 1000+ formats—images, documents, audio, video, ebooks, and more. Our secure, privacy-first tool works right in your browser—no registration required!
-                </p>
-                <div style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  justifyContent: "center",
-                  gap: "1.5rem",
-                  marginBottom: "1.5rem"
-                }}>
-                  <div style={{ flex: 1, minWidth: "170px" }}>
-                    <strong style={{ color: "#77e6b6" }}>✨ Easy to Use:</strong>
-                    <span> Just upload or drag and drop your files, choose a format, and convert with a single click.</span>
+              {/* === PROMO SECTION: Free Online Converter (responsive/mobile enhanced) === */}
+              <section
+                style={{
+                  maxWidth: "700px",
+                  margin: "24px auto 0 auto",
+                  background: "#172133",
+                  borderRadius: "18px",
+                  padding: "2.5rem 2rem",
+                  boxShadow: "0 2px 16px rgba(20,30,40,0.13)",
+                  color: "#eef1f7"
+                }}
+              >
+                <style>
+                  {`
+                    @media (max-width: 600px) {
+                      .promo-mobile {
+                        padding: 1.2rem 0.7rem !important;
+                        border-radius: 10px !important;
+                      }
+                      .promo-features {
+                        flex-direction: column !important;
+                        gap: 1.1rem !important;
+                      }
+                    }
+                  `}
+                </style>
+                <div className="promo-mobile">
+                  <h2
+                    style={{
+                      textAlign: "center",
+                      fontSize: "2.1rem",
+                      fontWeight: 700,
+                      marginBottom: "1rem",
+                      color: "#a4d037"
+                    }}
+                  >
+                    Free Online Converter
+                  </h2>
+                  <p
+                    style={{
+                      fontSize: "1.2rem",
+                      textAlign: "center",
+                      marginBottom: "1.4rem"
+                    }}
+                  >
+                    Instantly convert files between 1000+ formats—images, documents, audio, video, ebooks, and more. Our secure, privacy-first tool works right in your browser—no registration required!
+                  </p>
+                  <div
+                    className="promo-features"
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      gap: "1.5rem",
+                      marginBottom: "1.5rem"
+                    }}
+                  >
+                    <div style={{ flex: 1, minWidth: "170px" }}>
+                      <span role="img" aria-label="Easy to Use" style={{ fontWeight: 700, color: "#77e6b6" }}>
+                        ✨ Easy to Use:
+                      </span>
+                      <span>
+                        {" "}
+                        Just upload or drag and drop your files, choose a format, and convert with a single click.
+                      </span>
+                    </div>
+                    <div style={{ flex: 1, minWidth: "170px" }}>
+                      <span role="img" aria-label="Private & Secure" style={{ fontWeight: 700, color: "#fdc06f" }}>
+                        🔒 Private &amp; Secure:
+                      </span>
+                      <span>
+                        {" "}
+                        Your files never leave our servers. All conversions are processed instantly and automatically deleted.
+                      </span>
+                    </div>
+                    <div style={{ flex: 1, minWidth: "170px" }}>
+                      <span role="img" aria-label="Lightning Fast" style={{ fontWeight: 700, color: "#79b5fe" }}>
+                        🚀 Lightning Fast:
+                      </span>
+                      <span>
+                        {" "}
+                        Enjoy quick, hassle-free conversions—even with large images, PDFs, audio, or videos.
+                      </span>
+                    </div>
+                    <div style={{ flex: 1, minWidth: "170px" }}>
+                      <span role="img" aria-label="Free" style={{ fontWeight: 700, color: "#ffa3b0" }}>
+                        🆓 100% Free:
+                      </span>
+                      <span>
+                        {" "}
+                        No limits, no hidden costs, and no signup required for basic conversions.
+                      </span>
+                    </div>
                   </div>
-                  <div style={{ flex: 1, minWidth: "170px" }}>
-                    <strong style={{ color: "#fdc06f" }}>🔒 Private &amp; Secure:</strong>
-                    <span> Your files never leave our servers. All conversions are processed instantly and automatically deleted.</span>
+                  <p style={{ fontSize: "1.05rem", textAlign: "center" }}>
+                    Whether you need to change an image from PNG to JPG, convert a DOCX to PDF, extract audio from a video, or batch convert e-books—our Free Online Converter is here for you.
+                  </p>
+                  <div style={{ marginTop: "1.4rem", textAlign: "center" }}>
+                    <a
+                      href="#dropzone"
+                      style={{
+                        background: "#a4d037",
+                        color: "#111",
+                        padding: "0.8em 2.2em",
+                        borderRadius: "10px",
+                        fontWeight: 700,
+                        fontSize: "1.2rem",
+                        textDecoration: "none",
+                        transition: "background 0.15s"
+                      }}
+                    >
+                      Try it now!
+                    </a>
                   </div>
-                  <div style={{ flex: 1, minWidth: "170px" }}>
-                    <strong style={{ color: "#79b5fe" }}>🚀 Lightning Fast:</strong>
-                    <span> Enjoy quick, hassle-free conversions—even with large images, PDFs, audio, or videos.</span>
-                  </div>
-                  <div style={{ flex: 1, minWidth: "170px" }}>
-                    <strong style={{ color: "#ffa3b0" }}>🆓 100% Free:</strong>
-                    <span> No limits, no hidden costs, and no signup required for basic conversions.</span>
-                  </div>
-                </div>
-                <p style={{ fontSize: "1.05rem", textAlign: "center" }}>
-                  Whether you need to change an image from PNG to JPG, convert a DOCX to PDF, extract audio from a video, or batch convert e-books—our Free Online Converter is here for you.
-                </p>
-                <div style={{ marginTop: "1.4rem", textAlign: "center" }}>
-                  <a href="#" style={{
-                    background: "#a4d037",
-                    color: "#111",
-                    padding: "0.8em 2.2em",
-                    borderRadius: "10px",
-                    fontWeight: 700,
-                    fontSize: "1.2rem",
-                    textDecoration: "none",
-                    transition: "background 0.15s"
-                  }}>Try it now!</a>
                 </div>
               </section>
               {/* === END PROMO SECTION === */}
-
             </form>
           </main>
           <script src="script.js" defer />
