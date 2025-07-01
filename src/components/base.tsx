@@ -59,10 +59,10 @@ export const BaseHtml = ({
         <div style={{ flex: "1 1 0%", display: "flex", flexDirection: "column" }}>
           {children}
 
-          {/* Feature/Promo Section */}
+          {/* Promo Section: Free Online Converter */}
           <section style={{
             maxWidth: "700px",
-            margin: "40px auto 0 auto",
+            margin: "24px auto 0 auto",
             background: "#172133",
             borderRadius: "18px",
             padding: "2.5rem 2rem",
