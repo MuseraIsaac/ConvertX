@@ -21,6 +21,14 @@ export const BaseHtml = ({
       <link rel="icon" type="image/png" sizes="32x32" href={`${webroot}/favicon-32x32.png`} />
       <link rel="icon" type="image/png" sizes="16x16" href={`${webroot}/favicon-16x16.png`} />
       <link rel="manifest" href={`${webroot}/site.webmanifest`} />
+      {/* Hide side ads on small screens */}
+      <style>
+        {`
+        @media (max-width: 900px) {
+          .side-ad { display: none !important; }
+        }
+        `}
+      </style>
       {/* Load AdSense only once here */}
       <script
         async
@@ -30,8 +38,9 @@ export const BaseHtml = ({
     </head>
     <body className="min-h-screen w-full bg-neutral-900 text-neutral-200">
       <div style={{ display: "flex", minHeight: "100vh", flexDirection: "row" }}>
-        {/* Left Vertical Ad */}
+        {/* Left Vertical Ad (hidden on mobile) */}
         <div
+          className="side-ad"
           style={{
             width: "160px",
             minHeight: "100vh",
@@ -97,8 +106,9 @@ export const BaseHtml = ({
           </footer>
         </div>
 
-        {/* Right Vertical Ad */}
+        {/* Right Vertical Ad (hidden on mobile) */}
         <div
+          className="side-ad"
           style={{
             width: "160px",
             minHeight: "100vh",
