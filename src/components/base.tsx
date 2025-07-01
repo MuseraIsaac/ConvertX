@@ -92,7 +92,7 @@ export const BaseHtml = ({
                   Contact Us
                 </a>
               </div>
-              <span>Powered by ConvertX v{version || ""}</span>
+              <span>Powered by ConvertX</span>
             </div>
           </footer>
         </div>
