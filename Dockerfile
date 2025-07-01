@@ -1,5 +1,5 @@
 FROM debian:trixie-slim AS base
-LABEL org.opencontainers.image.source="https://github.com/C4illin/ConvertX"
+LABEL org.opencontainers.image.source="https://github.com/MuseraIsaac/ConvertX"
 WORKDIR /app
 
 # install bun
