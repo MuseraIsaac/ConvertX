@@ -3,7 +3,7 @@ import { version } from "../../package.json";
 
 export const BaseHtml = ({
   children,
-  title = "ConvertX",
+  title = "Free Convertion Tool",
   webroot = "",
 }: {
   children: JSX.Element;
@@ -12,28 +12,116 @@ export const BaseHtml = ({
 }) => (
   <html lang="en">
     <head>
-      <meta charset="UTF-8" />
+      <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="webroot" content={webroot} />
-      <title safe>{title}</title>
+      <title>{title}</title>
       <link rel="stylesheet" href={`${webroot}/generated.css`} />
       <link rel="apple-touch-icon" sizes="180x180" href={`${webroot}/apple-touch-icon.png`} />
       <link rel="icon" type="image/png" sizes="32x32" href={`${webroot}/favicon-32x32.png`} />
       <link rel="icon" type="image/png" sizes="16x16" href={`${webroot}/favicon-16x16.png`} />
       <link rel="manifest" href={`${webroot}/site.webmanifest`} />
+      {/* Load AdSense only once here */}
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8176277097835363"
+        crossOrigin="anonymous"
+      ></script>
     </head>
-    <body class="flex min-h-screen w-full flex-col bg-neutral-900 text-neutral-200">
-      {children}
-      <footer class="w-full">
-        <div class="p-4 text-center text-sm text-neutral-500">
-          <div>
-            <a href="/about.html" class="text-neutral-400 hover:text-accent-500">About Us</a> |
-            <a href="/privacy.html" class="text-neutral-400 hover:text-accent-500"> Privacy Policy</a> |
-            <a href="/contact.html" class="text-neutral-400 hover:text-accent-500"> Contact Us</a>
-          </div>
-          <span>Powered by ConvertX </span>
+    <body className="min-h-screen w-full bg-neutral-900 text-neutral-200">
+      <div style={{ display: "flex", minHeight: "100vh", flexDirection: "row" }}>
+        {/* Left Vertical Ad */}
+        <div
+          style={{
+            width: "160px",
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client="ca-pub-8176277097835363"
+            data-ad-slot="6976324462"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: "(adsbygoogle = window.adsbygoogle || []).push({});",
+            }}
+          />
         </div>
-      </footer>    
+
+        {/* Main Content (center) */}
+        <div style={{ flex: "1 1 0%", display: "flex", flexDirection: "column" }}>
+          {children}
+
+          {/* Horizontal Ad above the footer */}
+          <div style={{ width: "100%", display: "flex", justifyContent: "center", margin: "24px 0 0 0" }}>
+            <ins
+              className="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8176277097835363"
+              data-ad-slot="4310968414"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: "(adsbygoogle = window.adsbygoogle || []).push({});",
+              }}
+            />
+          </div>
+
+          {/* Footer */}
+          <footer className="w-full">
+            <div className="p-4 text-center text-sm text-neutral-500">
+              <div>
+                <a href="/about.html" className="text-neutral-400 hover:text-accent-500">
+                  About Us
+                </a>{" "}
+                |{" "}
+                <a href="/privacy.html" className="text-neutral-400 hover:text-accent-500">
+                  Privacy Policy
+                </a>{" "}
+                |{" "}
+                <a href="/contact.html" className="text-neutral-400 hover:text-accent-500">
+                  Contact Us
+                </a>
+              </div>
+              <span>Powered by ConvertX v{version || ""}</span>
+            </div>
+          </footer>
+        </div>
+
+        {/* Right Vertical Ad */}
+        <div
+          style={{
+            width: "160px",
+            minHeight: "100vh",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "center",
+          }}
+        >
+          <ins
+            className="adsbygoogle"
+            style={{ display: "block" }}
+            data-ad-client="ca-pub-8176277097835363"
+            data-ad-slot="4978401417"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          ></ins>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: "(adsbygoogle = window.adsbygoogle || []).push({});",
+            }}
+          />
+        </div>
+      </div>
     </body>
   </html>
 );
