@@ -287,7 +287,7 @@ export const root = new Elysia()
                   Whether you need to change an image from PNG to JPG, convert a DOCX to PDF, extract audio from a video, or batch convert e-books—our Free Online Converter is here for you.
                 </p>
                 <div style={{ marginTop: "1.4rem", textAlign: "center" }}>
-                  <a href="#dropzone" style={{
+                  <a href="#" style={{
                     background: "#a4d037",
                     color: "#111",
                     padding: "0.8em 2.2em",
