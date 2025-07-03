@@ -353,7 +353,6 @@ export const root = new Elysia()
                 <script dangerouslySetInnerHTML={{
                   __html: `
                     (function(){
-                      // Use webroot if defined (for subpaths)
                       var base = (window.WEBROOT && window.WEBROOT !== '/') ? window.WEBROOT : '';
                       async function updateConversionCount() {
                         try {
