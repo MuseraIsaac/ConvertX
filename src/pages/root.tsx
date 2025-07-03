@@ -19,29 +19,21 @@ import { FIRST_RUN, userService } from "./user";
 export const root = new Elysia()
   .use(userService)
   .get("/", async ({ jwt, redirect, cookie: { auth, jobId } }) => {
+    // --- AUTH BLOCK: allow unauth or redirect to login ---
+    let user: ({ id: string } & JWTPayloadSpec) | false = false;
     if (!ALLOW_UNAUTHENTICATED) {
-      if (FIRST_RUN) {
-        return redirect(`${WEBROOT}/setup`, 302);
-      }
-      if (!auth?.value) {
-        return redirect(`${WEBROOT}/login`, 302);
-      }
+      if (FIRST_RUN) return redirect(`${WEBROOT}/setup`, 302);
+      if (!auth?.value) return redirect(`${WEBROOT}/login`, 302);
     }
 
-    // validate jwt
-    let user: ({ id: string } & JWTPayloadSpec) | false = false;
     if (ALLOW_UNAUTHENTICATED) {
       const newUserId = String(
         randomInt(2 ** 24, Math.min(2 ** 48 + 2 ** 24 - 1, Number.MAX_SAFE_INTEGER)),
       );
-      const accessToken = await jwt.sign({
-        id: newUserId,
-      });
+      const accessToken = await jwt.sign({ id: newUserId });
       user = { id: newUserId };
       if (!auth) {
-        return {
-          message: "No auth cookie, perhaps your browser is blocking cookies.",
-        };
+        return { message: "No auth cookie, perhaps your browser is blocking cookies." };
       }
       auth.set({
         value: accessToken,
@@ -59,32 +51,22 @@ export const root = new Elysia()
       ) {
         const existingUser = db.query("SELECT * FROM users WHERE id = ?").as(User).get(user.id);
         if (!existingUser) {
-          if (auth?.value) {
-            auth.remove();
-          }
+          if (auth?.value) auth.remove();
           return redirect(`${WEBROOT}/login`, 302);
         }
       }
     }
+    if (!user) return redirect(`${WEBROOT}/login`, 302);
 
-    if (!user) {
-      return redirect(`${WEBROOT}/login`, 302);
-    }
-
-    // create a new job
+    // --- Create a new job as before ---
     db.query("INSERT INTO jobs (user_id, date_created) VALUES (?, ?)").run(
       user.id,
       new Date().toISOString(),
     );
-
     const { id } = db
       .query("SELECT id FROM jobs WHERE user_id = ? ORDER BY id DESC")
       .get(user.id) as { id: number };
-
-    if (!jobId) {
-      return { message: "Cookies should be enabled to use this app." };
-    }
-
+    if (!jobId) return { message: "Cookies should be enabled to use this app." };
     jobId.set({
       value: id,
       httpOnly: true,
@@ -93,6 +75,7 @@ export const root = new Elysia()
       sameSite: "strict",
     });
 
+    // --- Render the UI ---
     return (
       <BaseHtml webroot={WEBROOT}>
         <>
@@ -109,6 +92,7 @@ export const root = new Elysia()
               sm:px-4
             `}
           >
+            {/* MAIN UI */}
             <article class="article">
               <h1 class="mb-4 text-xl">Convert</h1>
               <div class="mb-4 scrollbar-thin max-h-[50vh] overflow-y-auto">
@@ -194,7 +178,6 @@ export const root = new Elysia()
                       </article>
                     ))}
                   </article>
-
                   <select name="convert_to" aria-label="Convert to" required hidden>
                     <option selected disabled value="">
                       Convert to
@@ -353,6 +336,7 @@ export const root = new Elysia()
                 <script dangerouslySetInnerHTML={{
                   __html: `
                     (function(){
+                      // Use window.WEBROOT if defined for subpaths
                       var base = (window.WEBROOT && window.WEBROOT !== '/') ? window.WEBROOT : '';
                       async function updateConversionCount() {
                         try {
