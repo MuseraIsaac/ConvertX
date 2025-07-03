@@ -16,6 +16,13 @@ export const BaseHtml = ({
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="webroot" content={webroot} />
       <title>{title}</title>
+      {/* Meta Description for SEO */}
+      <meta
+        name="description"
+        content="Online File Convertor is a free online file converter supporting 1000+ formats—images, documents, video, audio, ebooks, and more. Fast, private, no registration required."
+      />
+      {/* Allow search engines to index and follow links */}
+      <meta name="robots" content="index, follow" />
       <link rel="stylesheet" href={`${webroot}/generated.css`} />
       <link rel="apple-touch-icon" sizes="180x180" href={`${webroot}/apple-touch-icon.png`} />
       <link rel="icon" type="image/png" sizes="32x32" href={`${webroot}/favicon-32x32.png`} />
