@@ -46,6 +46,15 @@ const app = new Elysia({
   .use(deleteFile)
   .use(listConverters)
   .use(chooseConverter)
+  // --- BEGIN: Live conversion count API endpoint ---
+  .get("/api/conversion-count", () => {
+    // "jobs" table tracks conversions, adjust if needed
+    const row = db.query("SELECT COUNT(*) as total FROM jobs").get();
+    // Start from 1230
+    const count = 1230 + (row?.total ?? 0);
+    return { count };
+  })
+  // --- END: Live conversion count API endpoint ---
   .onError(({ error }) => {
     console.error(error);
   });
