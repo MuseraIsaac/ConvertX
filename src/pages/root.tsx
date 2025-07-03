@@ -332,16 +332,28 @@ export const root = new Elysia()
                     </a>
                   </div>
                 </div>
-                {/* === LIVE COUNTER JS === */}
+                {/* === LIVE COUNTER JS WITH LOGGING === */}
                 <script dangerouslySetInnerHTML={{
                   __html: `
                     (function(){
+                      console.log("[LiveCounter] Script loaded. Attempting to fetch conversion count...");
                       async function updateConversionCount() {
                         try {
+                          console.log("[LiveCounter] Fetching from API...");
                           const res = await fetch('https://onlinefileconvertor.com/api/conversion-count');
+                          console.log("[LiveCounter] Raw response:", res);
                           const data = await res.json();
-                          document.getElementById('conversion-count').innerText = data.count.toLocaleString();
-                        } catch(e) {}
+                          console.log("[LiveCounter] Parsed response data:", data);
+                          var el = document.getElementById('conversion-count');
+                          if (el) {
+                            el.innerText = data.count.toLocaleString();
+                            console.log("[LiveCounter] Updated counter in DOM.");
+                          } else {
+                            console.warn("[LiveCounter] Could not find element #conversion-count");
+                          }
+                        } catch(e) {
+                          console.error("[LiveCounter] Failed to fetch or update conversion count:", e);
+                        }
                       }
                       updateConversionCount();
                       setInterval(updateConversionCount, 10000);
