@@ -93,8 +93,6 @@ export const root = new Elysia()
       sameSite: "strict",
     });
 
-    console.log("jobId set to:", id);
-
     return (
       <BaseHtml webroot={WEBROOT}>
         <>
@@ -146,7 +144,7 @@ export const root = new Elysia()
             <form
               method="post"
               action={`${WEBROOT}/convert`}
-              class="relative mx-auto mb-[35vh] w-full max-w-4xl"
+              class="relative mx-auto w-full max-w-4xl"
             >
               <input type="hidden" name="file_names" id="file_names" />
               <article class="article w-full">
@@ -223,7 +221,7 @@ export const root = new Elysia()
                 disabled
               />
 
-              {/* === PROMO SECTION: Free Online Converter (with live counter) === */}
+              {/* Promo Section with Live Counter */}
               <section
                 style={{
                   maxWidth: "700px",
@@ -261,42 +259,20 @@ export const root = new Elysia()
                   >
                     Free Online Converter
                   </h2>
-
-                  {/* ---- COUNTER (LIVE) ---- */}
-                  <div
-                    id="conversion-counter"
-                    style={{
-                      fontWeight: 700,
-                      color: "#a4d037",
-                      fontSize: "1.3rem",
-                      margin: "0 0 1.2rem 0",
-                      textAlign: "center",
-                      letterSpacing: ".01em"
-                    }}
-                  >
-                    1,230 files converted!
+                  {/* LIVE COUNTER HERE */}
+                  <div style={{ textAlign: "center", marginBottom: "1.2rem" }}>
+                    <span
+                      id="conversion-count"
+                      style={{
+                        fontWeight: 700,
+                        color: "#a4d037",
+                        fontSize: "1.6rem"
+                      }}
+                    >
+                      1,230
+                    </span>{" "}
+                    files converted!
                   </div>
-                  <script
-                    dangerouslySetInnerHTML={{
-                      __html: `
-                        async function updateConvCounter() {
-                          try {
-                            const res = await fetch('/api/conversion-count');
-                            const data = await res.json();
-                            document.getElementById('conversion-counter').textContent =
-                              data.count.toLocaleString() + " files converted!";
-                          } catch {
-                            document.getElementById('conversion-counter').textContent =
-                              "1,230+ files converted!";
-                          }
-                        }
-                        updateConvCounter();
-                        setInterval(updateConvCounter, 10000);
-                      `
-                    }}
-                  />
-                  {/* ---- END COUNTER ---- */}
-
                   <p
                     style={{
                       fontSize: "1.2rem",
@@ -374,6 +350,22 @@ export const root = new Elysia()
                     </a>
                   </div>
                 </div>
+                {/* JS for live counter */}
+                <script
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                      async function updateConversionCount() {
+                        try {
+                          const res = await fetch('/api/conversion-count');
+                          const data = await res.json();
+                          document.getElementById('conversion-count').innerText = data.count.toLocaleString();
+                        } catch (e) {}
+                      }
+                      updateConversionCount();
+                      setInterval(updateConversionCount, 10000);
+                    `,
+                  }}
+                />
               </section>
               {/* === END PROMO SECTION === */}
             </form>
