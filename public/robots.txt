@@ -1,2 +1,3 @@
 User-agent: *
 Disallow: 
+Sitemap: https://onlinefileconvertor.com/sitemap.xml
