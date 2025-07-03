@@ -352,15 +352,19 @@ export const root = new Elysia()
                 {/* === LIVE COUNTER JS === */}
                 <script dangerouslySetInnerHTML={{
                   __html: `
-                    async function updateConversionCount() {
-                      try {
-                        const res = await fetch('/api/conversion-count');
-                        const data = await res.json();
-                        document.getElementById('conversion-count').innerText = data.count.toLocaleString();
-                      } catch(e) {}
-                    }
-                    updateConversionCount();
-                    setInterval(updateConversionCount, 10000);
+                    (function(){
+                      // Use webroot if defined (for subpaths)
+                      var base = (window.WEBROOT && window.WEBROOT !== '/') ? window.WEBROOT : '';
+                      async function updateConversionCount() {
+                        try {
+                          const res = await fetch(base + '/api/conversion-count');
+                          const data = await res.json();
+                          document.getElementById('conversion-count').innerText = data.count.toLocaleString();
+                        } catch(e) {}
+                      }
+                      updateConversionCount();
+                      setInterval(updateConversionCount, 10000);
+                    })();
                   `
                 }} />
               </section>
