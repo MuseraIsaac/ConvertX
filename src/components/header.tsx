@@ -95,7 +95,7 @@ export const Header = ({
         <ul>
           <li>
             <strong>
-              <a href={`${webroot}/`}>ConvertX</a>
+              <a href={`${webroot}/`}>Free File Converter</a>
             </strong>
           </li>
         </ul>
