@@ -253,7 +253,7 @@ export const root = new Elysia()
                       color: "#a4d037"
                     }}
                   >
-                    <span id="conversion-count">0</span> files converted!
+                    <span id="conversion-count"></span>
                   </div>
                   <p
                     style={{
