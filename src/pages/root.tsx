@@ -144,7 +144,7 @@ export const root = new Elysia()
             <form
               method="post"
               action={`${WEBROOT}/convert`}
-              class="relative mx-auto w-full max-w-4xl"
+              class="relative mx-auto mb-[35vh] w-full max-w-4xl"
             >
               <input type="hidden" name="file_names" id="file_names" />
               <article class="article w-full">
@@ -221,7 +221,7 @@ export const root = new Elysia()
                 disabled
               />
 
-              {/* Promo Section with Live Counter */}
+              {/* === PROMO SECTION: Free Online Converter (with live counter) === */}
               <section
                 style={{
                   maxWidth: "700px",
@@ -233,6 +233,7 @@ export const root = new Elysia()
                   color: "#eef1f7"
                 }}
               >
+                {/* Responsive/mobile styles */}
                 <style>
                   {`
                     @media (max-width: 600px) {
@@ -259,19 +260,17 @@ export const root = new Elysia()
                   >
                     Free Online Converter
                   </h2>
-                  {/* LIVE COUNTER HERE */}
-                  <div style={{ textAlign: "center", marginBottom: "1.2rem" }}>
-                    <span
-                      id="conversion-count"
-                      style={{
-                        fontWeight: 700,
-                        color: "#a4d037",
-                        fontSize: "1.6rem"
-                      }}
-                    >
-                      1,230
-                    </span>{" "}
-                    files converted!
+                  <div
+                    id="live-counter"
+                    style={{
+                      textAlign: "center",
+                      marginBottom: "1.2rem",
+                      fontSize: "1.25rem",
+                      fontWeight: 700,
+                      color: "#a4d037"
+                    }}
+                  >
+                    <span id="conversion-count">0</span> files converted!
                   </div>
                   <p
                     style={{
@@ -350,22 +349,20 @@ export const root = new Elysia()
                     </a>
                   </div>
                 </div>
-                {/* JS for live counter */}
-                <script
-                  dangerouslySetInnerHTML={{
-                    __html: `
-                      async function updateConversionCount() {
-                        try {
-                          const res = await fetch('/api/conversion-count');
-                          const data = await res.json();
-                          document.getElementById('conversion-count').innerText = data.count.toLocaleString();
-                        } catch (e) {}
-                      }
-                      updateConversionCount();
-                      setInterval(updateConversionCount, 10000);
-                    `,
-                  }}
-                />
+                {/* === LIVE COUNTER JS === */}
+                <script dangerouslySetInnerHTML={{
+                  __html: `
+                    async function updateConversionCount() {
+                      try {
+                        const res = await fetch('/api/conversion-count');
+                        const data = await res.json();
+                        document.getElementById('conversion-count').innerText = data.count.toLocaleString();
+                      } catch(e) {}
+                    }
+                    updateConversionCount();
+                    setInterval(updateConversionCount, 10000);
+                  `
+                }} />
               </section>
               {/* === END PROMO SECTION === */}
             </form>
