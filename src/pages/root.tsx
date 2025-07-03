@@ -340,7 +340,7 @@ export const root = new Elysia()
                       async function updateConversionCount() {
                         try {
                           console.log("[LiveCounter] Fetching from API...");
-                          const res = await fetch('https://onlinefileconvertor.com/api/conversion-count');
+                          const res = await fetch('/api/conversion-count');
                           console.log("[LiveCounter] Raw response:", res);
                           const data = await res.json();
                           console.log("[LiveCounter] Parsed response data:", data);
