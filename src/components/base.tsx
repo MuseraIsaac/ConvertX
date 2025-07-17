@@ -49,11 +49,11 @@ export const BaseHtml = ({
         <div
           className="side-ad"
           style={{
-            width: "320px",
             minHeight: "100vh",
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "center",
+            maxWidth: "360px" // <-- only a max width, NO fixed width!
           }}
         >
           <ins
@@ -117,11 +117,11 @@ export const BaseHtml = ({
         <div
           className="side-ad"
           style={{
-            width: "320px",
             minHeight: "100vh",
             display: "flex",
             alignItems: "flex-start",
             justifyContent: "center",
+            maxWidth: "360px" // <-- only a max width, NO fixed width!
           }}
         >
           <ins
