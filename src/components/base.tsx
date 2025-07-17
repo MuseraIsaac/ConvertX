@@ -49,7 +49,7 @@ export const BaseHtml = ({
         <div
           className="side-ad"
           style={{
-            width: "160px",
+            width: "320px",
             minHeight: "100vh",
             display: "flex",
             alignItems: "flex-start",
@@ -117,7 +117,7 @@ export const BaseHtml = ({
         <div
           className="side-ad"
           style={{
-            width: "160px",
+            width: "320px",
             minHeight: "100vh",
             display: "flex",
             alignItems: "flex-start",
