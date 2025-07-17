@@ -91,6 +91,29 @@ export const Header = ({
 
   return (
     <header class="w-full p-4">
+      {/* --- Google AdSense AD BLOCK, placed above header --- */}
+      <div>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8176277097835363"
+          crossOrigin="anonymous"
+        ></script>
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block" }}
+          data-ad-client="ca-pub-8176277097835363"
+          data-ad-slot="6064848849"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "(adsbygoogle = window.adsbygoogle || []).push({});",
+          }}
+        />
+      </div>
+      {/* ---------------------------------------------- */}
+
       <nav class="mx-auto flex max-w-4xl justify-between rounded-sm bg-neutral-900 p-4">
         <ul>
           <li>
